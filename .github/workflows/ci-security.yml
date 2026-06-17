@@ -10,7 +10,7 @@ on:
 
 jobs:
   test-security-docker:
-    name: Test, Security Scan, Docker Build
+    name: Test, Security Scan, Docker Build and Push
     runs-on: ubuntu-latest
 
     steps:
@@ -58,3 +58,22 @@ jobs:
           ignore-unfixed: true
           vuln-type: os,library
           severity: CRITICAL,HIGH,MEDIUM
+
+      - name: Log in to Docker Hub
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker tag devsecops-flask-platform:ci ${{ secrets.DOCKERHUB_USERNAME }}/devsecops-flask-platform:latest
+          docker tag devsecops-flask-platform:ci ${{ secrets.DOCKERHUB_USERNAME }}/devsecops-flask-platform:${{ github.sha }}
+
+      - name: Push Docker image to Docker Hub
+        if: github.event_name == 'push'
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops-flask-platform:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops-flask-platform:${{ github.sha }}
