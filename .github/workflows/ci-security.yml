@@ -1,0 +1,46 @@
+name: CI Security Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-security-scan:
+    name: Test and Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest bandit pip-audit semgrep
+
+      - name: Run tests
+        run: |
+          mkdir -p .pytest-temp
+          python -m pytest -v --basetemp=.pytest-temp -p no:cacheprovider
+
+      - name: Bandit SAST scan
+        run: |
+          python -m bandit -r app.py app -x tests,venv || true
+
+      - name: pip-audit dependency scan
+        run: |
+          python -m pip_audit -r requirements.txt || true
+
+      - name: Semgrep SAST scan
+        run: |
+          semgrep scan --config auto --exclude venv . || true
