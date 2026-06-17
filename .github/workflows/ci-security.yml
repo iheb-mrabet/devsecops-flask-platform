@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  test-and-security-scan:
-    name: Test and Security Scan
+  test-security-docker:
+    name: Test, Security Scan, Docker Build
     runs-on: ubuntu-latest
 
     steps:
@@ -44,7 +44,8 @@ jobs:
       - name: Semgrep SAST scan
         run: |
           semgrep scan --config auto --exclude venv . || true
-            - name: Build Docker image
+
+      - name: Build Docker image
         run: |
           docker build -t devsecops-flask-platform:ci .
 
@@ -53,7 +54,7 @@ jobs:
         with:
           image-ref: devsecops-flask-platform:ci
           format: table
-          exit-code: 0
+          exit-code: "0"
           ignore-unfixed: true
           vuln-type: os,library
           severity: CRITICAL,HIGH,MEDIUM
