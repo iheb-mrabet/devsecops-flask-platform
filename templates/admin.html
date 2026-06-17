@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel | DevSecOps Flask Platform{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+  <div>
+    <p class="text-uppercase text-muted small fw-semibold mb-1">Admin panel</p>
+    <h1 class="h3 mb-0">Platform management</h1>
+  </div>
+  <span class="badge text-bg-danger">Training-only insecure admin area</span>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-5">
+    <div class="border rounded-3 p-4 bg-white shadow-sm">
+      <h2 class="h4 mb-3">Create job post</h2>
+      <form method="post" action="{{ url_for('main.admin') }}">
+        <div class="mb-3">
+          <label class="form-label" for="title">Title</label>
+          <input class="form-control" id="title" name="title" required>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="department">Department</label>
+            <input class="form-control" id="department" name="department" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="location">Location</label>
+            <input class="form-control" id="location" name="location" required>
+          </div>
+        </div>
+        <div class="my-3">
+          <label class="form-label" for="salary_range">Salary range</label>
+          <input class="form-control" id="salary_range" name="salary_range" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="description">Description</label>
+          <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        </div>
+        <button class="btn btn-dark" type="submit">Create job</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="border rounded-3 p-4 bg-white shadow-sm h-100">
+      <h2 class="h4 mb-3">Users</h2>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Role</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+              <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td><span class="badge text-bg-light">{{ user.role }}</span></td>
+                <td>{{ user.created_at }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="border rounded-3 p-4 bg-white shadow-sm">
+      <h2 class="h4 mb-3">Candidates</h2>
+      <div class="list-group list-group-flush">
+        {% for candidate in candidates %}
+          <div class="list-group-item px-0">
+            <div class="fw-semibold">{{ candidate.full_name }}</div>
+            <div class="small text-muted">{{ candidate.email }} | {{ candidate.phone }}</div>
+            <p class="small mb-0 mt-1">{{ candidate.summary }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="border rounded-3 p-4 bg-white shadow-sm">
+      <h2 class="h4 mb-3">Feedback stream</h2>
+      <div class="list-group list-group-flush">
+        {% for item in feedback_items %}
+          <div class="list-group-item px-0">
+            <div class="d-flex justify-content-between gap-3">
+              <strong>{{ item.name|safe }}</strong>
+              <small class="text-muted">{{ item.created_at }}</small>
+            </div>
+            <div class="small text-muted">{{ item.email }}</div>
+            <p class="mb-0 mt-1">{{ item.message|safe }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

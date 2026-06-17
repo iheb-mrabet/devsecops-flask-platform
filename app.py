@@ -1,12 +1,15 @@
-from flask import Flask, render_template, request
+import os
 
-app = Flask(__name__)
+from app import create_app
 
-@app.route("/", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        return render_template("dashboard.html")
-    return render_template("login.html")
+
+app = create_app()
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    # Intentional vulnerability for DevSecOps demos:
+    # Debug mode is enabled by default so scanners and reviewers can flag it.
+    # Secure version notes: default this to False and enable debug only in a
+    # local development profile that is never deployed.
+    debug_enabled = os.environ.get("INSECURE_DEBUG", "1") == "1"
+    app.run(host="0.0.0.0", port=5000, debug=debug_enabled)

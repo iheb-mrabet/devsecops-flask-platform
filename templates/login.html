@@ -1,13 +1,26 @@
-<!DOCTYPE html>
-<html>
-<body>
+{% extends "base.html" %}
+{% block title %}Login | DevSecOps Flask Platform{% endblock %}
 
-<h1>Login</h1>
-
-<form method="POST">
-    <input type="text" name="username" placeholder="Username">
-    <button type="submit">Login</button>
-</form>
-
-</body>
-</html>
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-5">
+    <div class="border rounded-3 p-4 bg-white shadow-sm">
+      <h1 class="h3 mb-3">Login</h1>
+      <form method="post" action="{{ url_for('main.login') }}">
+        <div class="mb-3">
+          <label class="form-label" for="username">Username</label>
+          <input class="form-control" id="username" name="username" autocomplete="username" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="password">Password</label>
+          <input class="form-control" id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-dark w-100" type="submit">Sign in</button>
+      </form>
+      <div class="mt-3 small text-muted">
+        Demo account: <code>admin</code> / <code>admin123</code>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

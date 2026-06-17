@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Job Posts | DevSecOps Flask Platform{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+  <div>
+    <p class="text-uppercase text-muted small fw-semibold mb-1">Job posts</p>
+    <h1 class="h3 mb-0">Open roles</h1>
+  </div>
+  <a class="btn btn-outline-dark" href="{{ url_for('main.search') }}">Search jobs</a>
+</div>
+
+<div class="row g-4">
+  {% for job in jobs %}
+    <div class="col-md-6" id="job-{{ job.id }}">
+      <div class="border rounded-3 p-4 bg-white h-100 shadow-sm">
+        <div class="d-flex justify-content-between gap-3">
+          <div>
+            <h2 class="h4 mb-1">{{ job.title }}</h2>
+            <p class="text-muted mb-2">{{ job.department }} | {{ job.location }}</p>
+          </div>
+          <span class="badge text-bg-light align-self-start">{{ job.salary_range }}</span>
+        </div>
+        <p>{{ job.description }}</p>
+        <form method="post" action="{{ url_for('main.jobs') }}" class="row g-2">
+          <input type="hidden" name="job_id" value="{{ job.id }}">
+          <div class="col-sm-8">
+            <label class="visually-hidden" for="applicant-{{ job.id }}">Applicant name</label>
+            <input class="form-control" id="applicant-{{ job.id }}" name="applicant" placeholder="Applicant name">
+          </div>
+          <div class="col-sm-4 d-grid">
+            <button class="btn btn-dark" type="submit">Apply</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

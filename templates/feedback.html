@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Feedback | DevSecOps Flask Platform{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="border rounded-3 p-4 bg-white shadow-sm">
+      <p class="text-uppercase text-muted small fw-semibold mb-1">Contact</p>
+      <h1 class="h3 mb-3">Send feedback</h1>
+      <form method="post" action="{{ url_for('main.feedback') }}">
+        <div class="mb-3">
+          <label class="form-label" for="name">Name</label>
+          <input class="form-control" id="name" name="name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-control" id="email" name="email" type="email" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="message">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button class="btn btn-dark" type="submit">Submit feedback</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="border rounded-3 p-4 bg-white shadow-sm">
+      <h2 class="h4 mb-3">Recent comments</h2>
+      <div class="list-group list-group-flush">
+        {% for item in feedback_items %}
+          <div class="list-group-item px-0">
+            <div class="d-flex justify-content-between gap-3">
+              <strong>{{ item.name|safe }}</strong>
+              <small class="text-muted">{{ item.created_at }}</small>
+            </div>
+            <div class="small text-muted">{{ item.email }}</div>
+            <p class="mb-0 mt-1">{{ item.message|safe }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

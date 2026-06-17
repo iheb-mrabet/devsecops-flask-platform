@@ -1,10 +1,56 @@
-<!DOCTYPE html>
-<html>
-<body>
+{% extends "base.html" %}
+{% block title %}Dashboard | DevSecOps Flask Platform{% endblock %}
 
-<h1>Dashboard</h1>
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+  <div>
+    <p class="text-uppercase text-muted small fw-semibold mb-1">Dashboard</p>
+    <h1 class="h3 mb-0">Recruitment overview</h1>
+  </div>
+  <a class="btn btn-outline-dark" href="{{ url_for('main.admin') }}">Open admin panel</a>
+</div>
 
-<p>Welcome to the DevSecOps Project</p>
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="metric-box">
+      <div class="metric-value">{{ metrics.open_jobs }}</div>
+      <div class="metric-label">Open jobs</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="metric-box">
+      <div class="metric-value">{{ metrics.candidates }}</div>
+      <div class="metric-label">Candidates</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="metric-box">
+      <div class="metric-value">{{ metrics.feedback_items }}</div>
+      <div class="metric-label">Feedback items</div>
+    </div>
+  </div>
+</div>
 
-</body>
-</html>
+<div class="table-responsive border rounded-3 bg-white">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Role</th>
+        <th>Department</th>
+        <th>Location</th>
+        <th>Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for job in jobs %}
+        <tr>
+          <td>{{ job.title }}</td>
+          <td>{{ job.department }}</td>
+          <td>{{ job.location }}</td>
+          <td>{{ job.salary_range }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

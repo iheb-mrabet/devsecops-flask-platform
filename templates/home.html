@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Home | DevSecOps Flask Platform{% endblock %}
+
+{% block content %}
+<section class="p-4 p-lg-5 bg-light border rounded-3 mb-4">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-7">
+      <p class="text-uppercase text-muted small fw-semibold mb-2">Recruitment security lab</p>
+      <h1 class="display-6 fw-bold mb-3">A realistic job platform built for DevSecOps practice.</h1>
+      <p class="lead mb-4">Explore job posts, candidate profiles, admin workflows, search, and feedback pages that are intentionally vulnerable for scanner demonstrations.</p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-dark" href="{{ url_for('main.jobs') }}">View jobs</a>
+        <a class="btn btn-outline-dark" href="{{ url_for('main.search') }}">Search roles</a>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="row g-3">
+        <div class="col-4">
+          <div class="metric-box">
+            <div class="metric-value">{{ stats.jobs }}</div>
+            <div class="metric-label">Jobs</div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="metric-box">
+            <div class="metric-value">{{ stats.candidates }}</div>
+            <div class="metric-label">Candidates</div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="metric-box">
+            <div class="metric-value">{{ stats.feedback }}</div>
+            <div class="metric-label">Feedback</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h4 mb-0">Recent openings</h2>
+      <a href="{{ url_for('main.jobs') }}" class="link-dark">All jobs</a>
+    </div>
+    <div class="list-group">
+      {% for job in recent_jobs %}
+        <a href="{{ url_for('main.jobs') }}#job-{{ job.id }}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h3 class="h6 mb-1">{{ job.title }}</h3>
+            <small>{{ job.location }}</small>
+          </div>
+          <p class="mb-0 text-muted">{{ job.department }}</p>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="border rounded-3 p-3 bg-white">
+      <h2 class="h5">Demo login</h2>
+      <p class="text-muted mb-2">Default administrative account for the capstone environment:</p>
+      <dl class="row small mb-0">
+        <dt class="col-4">Username</dt>
+        <dd class="col-8"><code>admin</code></dd>
+        <dt class="col-4">Password</dt>
+        <dd class="col-8"><code>admin123</code></dd>
+      </dl>
+    </div>
+  </div>
+</div>
+{% endblock %}

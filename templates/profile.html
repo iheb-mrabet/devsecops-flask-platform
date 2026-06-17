@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Candidate Profile | DevSecOps Flask Platform{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="border rounded-3 p-4 bg-white shadow-sm">
+      <p class="text-uppercase text-muted small fw-semibold mb-1">Candidate profile</p>
+      <h1 class="h3 mb-3">{{ candidate.full_name if candidate else "No candidate" }}</h1>
+      {% if candidate %}
+        <dl class="small mb-0">
+          <dt>Email</dt>
+          <dd>{{ candidate.email }}</dd>
+          <dt>Phone</dt>
+          <dd>{{ candidate.phone }}</dd>
+          <dt>Resume</dt>
+          <dd><a href="{{ candidate.resume_url }}">{{ candidate.resume_url }}</a></dd>
+        </dl>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="border rounded-3 p-4 bg-white shadow-sm">
+      <h2 class="h4 mb-3">Update profile</h2>
+      {% if candidate %}
+        <form method="post" action="{{ url_for('main.profile') }}">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="full_name">Full name</label>
+              <input class="form-control" id="full_name" name="full_name" value="{{ candidate.full_name }}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="email">Email</label>
+              <input class="form-control" id="email" name="email" type="email" value="{{ candidate.email }}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="phone">Phone</label>
+              <input class="form-control" id="phone" name="phone" value="{{ candidate.phone }}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="new_password">New password</label>
+              <input class="form-control" id="new_password" name="new_password" type="password" placeholder="Optional">
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="summary">Summary</label>
+              <textarea class="form-control" id="summary" name="summary" rows="5">{{ candidate.summary }}</textarea>
+            </div>
+            <div class="col-12">
+              <button class="btn btn-dark" type="submit">Save profile</button>
+            </div>
+          </div>
+        </form>
+      {% else %}
+        <p class="text-muted mb-0">No candidate record is available.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

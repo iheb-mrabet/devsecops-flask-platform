@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Search | DevSecOps Flask Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mb-4">
+  <div class="col-lg-8">
+    <p class="text-uppercase text-muted small fw-semibold mb-1">Search</p>
+    <h1 class="h3 mb-3">Find job posts</h1>
+    <form method="get" action="{{ url_for('main.search') }}" class="input-group">
+      <input class="form-control" name="q" value="{{ query|safe }}" placeholder="Try Security, Remote, or Platform">
+      <button class="btn btn-dark" type="submit">Search</button>
+    </form>
+  </div>
+</div>
+
+{% if query %}
+  <div class="alert alert-secondary">
+    Showing results for: <strong>{{ query|safe }}</strong>
+  </div>
+{% endif %}
+
+{% if error %}
+  <div class="alert alert-danger">
+    Database error: {{ error }}
+  </div>
+{% endif %}
+
+<div class="row g-3">
+  {% for job in results %}
+    <div class="col-md-6">
+      <div class="border rounded-3 p-4 bg-white shadow-sm h-100">
+        <div class="d-flex justify-content-between gap-3">
+          <h2 class="h5 mb-1">{{ job.title }}</h2>
+          <span class="badge text-bg-light">{{ job.salary_range }}</span>
+        </div>
+        <p class="text-muted mb-2">{{ job.department }} | {{ job.location }}</p>
+        <p class="mb-0">{{ job.description }}</p>
+      </div>
+    </div>
+  {% else %}
+    {% if query and not error %}
+      <div class="col-12">
+        <div class="border rounded-3 p-4 bg-white text-muted">No jobs matched this query.</div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}
